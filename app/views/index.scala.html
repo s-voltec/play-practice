@@ -1,0 +1,32 @@
+@import models.TestRecords._
+@import helper._
+
+@(records: Seq[TestRecord], recordForm: Form[RecordFormData])(implicit request: RequestHeader, messages: Messages, flash: Flash)
+
+
+@flash.get("message")
+
+@form(action = routes.HomeController.post()) {
+    @CSRF.formField
+    @inputText(recordForm("name"))
+    @select(recordForm("gender"), Seq("0" -> "", "1" -> "男", "2" -> "女", "9" -> "その他"))
+    @inputText(recordForm("address"))
+    @inputDate(recordForm("birthday"))
+    <input type="submit" >
+}
+
+<table>
+    <thead>
+        <tr><th>氏名</th><th>性別</th><th>住所</th><th>生年月日</th></tr>
+    </thead>
+    <tbody>
+        @for(r <- records) {
+            <tr>
+                <td> @r.name </td>
+                <td> @r.gender </td>
+                <td> @r.address </td>
+                <td> @r.birthday </td>
+            </tr>
+        }
+    </tbody>
+</table>
